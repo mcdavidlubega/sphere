@@ -1,7 +1,7 @@
-import * as THREE from "three";
-import "./style.css";
-import gsap from "gsap";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import * as THREE from 'three';
+import './style.css';
+import gsap from 'gsap';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 //Scene
 const scene = new THREE.Scene();
@@ -9,11 +9,24 @@ const scene = new THREE.Scene();
 //Create the sphere
 const geometry = new THREE.SphereGeometry(3, 64, 64);
 const material = new THREE.MeshStandardMaterial({
-  color: "#00ff83",
+  color: '#00ff83',
   roughness: 0.6,
 });
 const mesh = new THREE.Mesh(geometry, material);
+
 scene.add(mesh);
+
+//Add  anew mesh
+const sm_geomettry = new THREE.SphereGeometry(0.3, 64, 64);
+const sm_material = new THREE.MeshStandardMaterial({
+  color: '#00ff83',
+  roughness: 0.6,
+});
+
+const sm_sphere = new THREE.Mesh(sm_geomettry, sm_material);
+
+mesh.add(sm_sphere);
+sm_sphere.position.x = 8;
 
 //Sizes
 const sizes = {
@@ -37,7 +50,7 @@ camera.position.z = 20;
 scene.add(camera);
 
 //Render
-const canvas = document.querySelector(".webgl");
+const canvas = document.querySelector('.webgl');
 const renderer = new THREE.WebGLRenderer({ canvas });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(2);
@@ -51,7 +64,7 @@ controls.enableZoom = false;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 5;
 //Resize
-window.addEventListener("resize", () => {
+window.addEventListener('resize', () => {
   //Update sizes
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
@@ -71,15 +84,15 @@ loop();
 //Timeline Magic
 const tl = gsap.timeline({ defaults: { duration: 1 } });
 tl.fromTo(mesh.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
-tl.fromTo("nav", { y: "-100%" }, { y: "0%" });
-tl.fromTo(".title", { opacity: 0 }, { opacity: 1 });
+tl.fromTo('nav', { y: '-100%' }, { y: '0%' });
+tl.fromTo('.title', { opacity: 0 }, { opacity: 1 });
 
 //Mouse Animation Colors
 let mouseDown = false;
 let rgb = [];
-window.addEventListener("mousedown", () => (mouseDown = true));
-window.addEventListener("mouseup", () => (mouseDown = false));
-window.addEventListener("mousemove", (e) => {
+window.addEventListener('mousedown', () => (mouseDown = true));
+window.addEventListener('mouseup', () => (mouseDown = false));
+window.addEventListener('mousemove', (e) => {
   if (mouseDown) {
     rgb = [
       Math.round((e.pageX / sizes.width) * 255),
@@ -88,7 +101,7 @@ window.addEventListener("mousemove", (e) => {
     ];
 
     //Let's Animate
-    let newColor = new THREE.Color(`rgb(${rgb.join(",")})`);
+    let newColor = new THREE.Color(`rgb(${rgb.join(',')})`);
     gsap.to(mesh.material.color, {
       r: newColor.r,
       g: newColor.g,
